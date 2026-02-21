@@ -1,0 +1,25 @@
+{
+  "name": "curso.dev",
+  "version": "1.0.0",
+  "description": "A Tabnews clone",
+  "main": "index.js",
+  "dependencies": {
+    "next": "^16.1.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "next dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/gariani/clone_tabnews.git"
+  },
+  "author": "Daniel Gariani Rafael",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gariani/clone_tabnews/issues"
+  },
+  "homepage": "https://github.com/gariani/clone_tabnews#readme"
+}

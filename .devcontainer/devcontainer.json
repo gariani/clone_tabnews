@@ -12,5 +12,17 @@
     3000,
     3001,
     8080
-  ]
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "eamodio.gitlens",
+        "cweijan.dbclient-jdbc",
+        "cweijan.vscode-database-client2",
+        "Postman.postman-for-vscode"
+      ]
+    }
+  }
 }
