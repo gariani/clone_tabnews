@@ -1,0 +1,10 @@
+{
+  "name": "curso.dev",
+  "version": "0.1",
+  "description": "Tabnews",
+  "main": "index.js",
+  "dev": "nextjs",
+  "config": {
+    "port":"8080"
+  }
+}
