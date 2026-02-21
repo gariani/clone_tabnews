@@ -5,6 +5,7 @@ services:
     image: tab_news
     ports:
       - "8080:8080"
+      - "3000:3000"
     volumes:
       - type: bind
         source: /run/media/daniel/projects/projects/curso.dev

@@ -10,6 +10,6 @@ RUN apt-get update && \
 
 USER node
 
-EXPOSE "8080"
+EXPOSE "3000"
 
 CMD ["sleep", "infinity"]
