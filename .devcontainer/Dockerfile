@@ -5,7 +5,7 @@ WORKDIR /curso.dev
 USER root
 
 RUN apt-get update && \
-    apt-get install -y curl && \
+    apt-get install -y curl nano && \
     rm -rf /var/lib/apt/lists/*
 
 USER node
