@@ -10,3 +10,10 @@ services:
       - type: bind
         source: /run/media/daniel/projects/projects/curso.dev
         target: /curso.dev
+
+  database:
+    image: "postgres:16.0-alpine3.18"
+    environment:
+      POSTGRES_PASSWORD: "PASSWORD"
+    ports:
+      - "5432:5432"
