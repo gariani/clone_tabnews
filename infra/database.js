@@ -7,7 +7,7 @@ async function query(queryObject) {
     user: process.env.DB_USER,
     database: process.env.DB_DATABASE,
     password: process.env.DB_PASS,
-    ssl: process.env.NODE_ENV === "development" ? false : true,
+    ssl: getSSLValues(),
   });
 
   try {
@@ -29,7 +29,7 @@ async function queryWithParam(queryObject, values) {
     user: process.env.DB_USER,
     database: process.env.DB_DATABASE,
     password: process.env.DB_PASS,
-    ssl: process.env.NODE_ENV === "development" ? false : true,
+    ssl: getSSLValues(),
   });
 
   try {
@@ -42,6 +42,10 @@ async function queryWithParam(queryObject, values) {
   } finally {
     await client.end();
   }
+}
+
+function getSSLValues() {
+  return process.env.APP_ENV === "development" ? false : true;
 }
 
 export default {

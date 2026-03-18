@@ -11,11 +11,12 @@ services:
         source: /run/media/daniel/projects/projects/curso.dev
         target: /curso.dev
     env_file:
-      - ../.env.production
+      #- ../.env.production
+      - ../.env.development
 
   database:
     image: "postgres:16.0-alpine3.18"
     env_file:
-      - ../.env
+      - ../.env.development
     ports:
       - "5432:5432"
