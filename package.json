@@ -18,8 +18,8 @@
     "dev": "next dev",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
-    "test": "jest --passWithNoTests",
-    "test:watch": "jest --watchAll --passWithNoTests",
+    "test": "jest --passWithNoTests --runInBand",
+    "test:watch": "jest --watchAll --passWithNoTests --runInBand",
     "migration:create": "node-pg-migrate create create-users-table -m infra/migrations",
     "migration:up": "node-pg-migrate up -m infra/migrations --envPath .env.development",
     "migration:down": "node-pg-migrate down -m infra/migrations --envPath .env.development"

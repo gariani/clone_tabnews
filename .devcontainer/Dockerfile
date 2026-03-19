@@ -5,7 +5,7 @@ WORKDIR /curso.dev
 USER root
 
 RUN apt-get update && \
-    apt-get install -y curl nano postgresql && \
+    apt-get install -y curl nano postgresql sudo tree && \
     rm -rf /var/lib/apt/lists/*
 
 USER node
