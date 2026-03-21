@@ -1,6 +1,6 @@
 import { Client } from "pg";
 
-async function query(queryObject) {
+async function getNewClient() {
   const client = new Client({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
@@ -10,8 +10,16 @@ async function query(queryObject) {
     ssl: getSSLValues(),
   });
 
+  await client.connect();
+  return client;
+}
+
+async function query(queryObject) {
+  let client;
+
   try {
-    await client.connect();
+    client = await getNewClient();
+
     const result = await client.query(queryObject);
     return result;
   } catch (error) {
@@ -23,17 +31,10 @@ async function query(queryObject) {
 }
 
 async function queryWithParam(queryObject, values) {
-  const client = new Client({
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    database: process.env.DB_DATABASE,
-    password: process.env.DB_PASS,
-    ssl: getSSLValues(),
-  });
+  let client;
 
   try {
-    await client.connect();
+    client = await getNewClient();
     const result = await client.query(queryObject, values);
     return result;
   } catch (error) {
@@ -49,6 +50,7 @@ function getSSLValues() {
 }
 
 export default {
-  query: query,
-  queryWithParam: queryWithParam,
+  query,
+  queryWithParam,
+  getNewClient,
 };
