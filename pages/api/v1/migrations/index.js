@@ -3,41 +3,52 @@ import { join } from "node:path";
 import database from "infra/database.js";
 
 export default async function m(request, response) {
-  const dbClient = await database.getNewClient();
+  const allowedMethods = ["GET", "POST"];
+  if (!allowedMethods.includes(request.method)) {
+    return response.status(405).json({
+      error: `Method "${request.method}" not allowed`,
+    });
+  }
 
-  const migrationsSetup = {
-    dbClient: dbClient,
-    databaseUrl: process.env.DATABASE_URL,
-    dryRun: true,
-    dir: join("infra", "migrations"),
-    direction: "up",
-    verbose: true,
-    migrationsTable: "pgmigrations",
-  };
+  let dbClient;
+  try {
+    dbClient = await database.getNewClient();
 
-  let pendingMigrations;
-  let migratedMigrations;
-
-  if (request.method === "GET") {
-    pendingMigrations = await migrationRunner({
-      ...migrationsSetup,
+    const migrationsSetup = {
+      dbClient: dbClient,
+      databaseUrl: process.env.DATABASE_URL,
       dryRun: true,
-    });
-    await dbClient.end();
-    response.status(200).json(pendingMigrations);
-  }
+      dir: join("infra", "migrations"),
+      direction: "up",
+      verbose: true,
+      migrationsTable: "pgmigrations",
+    };
 
-  if (request.method === "POST") {
-    migratedMigrations = await migrationRunner({
-      ...migrationsSetup,
-      dryRun: false,
-    });
-    if (migratedMigrations.length > 0) {
-      response.status(201).json(migratedMigrations);
+    let pendingMigrations;
+    let migratedMigrations;
+
+    if (request.method === "GET") {
+      pendingMigrations = await migrationRunner({
+        ...migrationsSetup,
+        dryRun: true,
+      });
+      response.status(200).json(pendingMigrations);
     }
-    await dbClient.end();
-    response.status(200).json(migratedMigrations);
-  }
 
-  response.status(405).end();
+    if (request.method === "POST") {
+      migratedMigrations = await migrationRunner({
+        ...migrationsSetup,
+        dryRun: false,
+      });
+      if (migratedMigrations.length > 0) {
+        response.status(201).json(migratedMigrations);
+      }
+      response.status(200).json(migratedMigrations);
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  } finally {
+    await dbClient.end();
+  }
 }
