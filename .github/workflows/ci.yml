@@ -1,0 +1,14 @@
+# .github/workflows/ci.yml
+name: CI
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        run: echo "ok"   # replace with your actual test command
