@@ -16,14 +16,15 @@
     "prettier": "^3.8.1"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": " npm run wait-for-postgres && npm run migrations:up && next dev",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
     "test": "jest --passWithNoTests --runInBand",
     "test:watch": "jest --watchAll --passWithNoTests --runInBand",
-    "migration:create": "node-pg-migrate create create-users-table -m infra/migrations",
-    "migration:up": "node-pg-migrate up -m infra/migrations --envPath .env.development",
-    "migration:down": "node-pg-migrate down -m infra/migrations --envPath .env.development"
+    "migrations:create": "node-pg-migrate create create-users-table -m infra/migrations",
+    "migrations:up": "node-pg-migrate up -m infra/migrations --envPath .env.development",
+    "migrations:down": "node-pg-migrate down -m infra/migrations --envPath .env.development",
+    "wait-for-postgres": "node infra/scripts/wait-for-postgres.js"
   },
   "repository": {
     "type": "git",
