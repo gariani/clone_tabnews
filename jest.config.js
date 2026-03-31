@@ -6,6 +6,7 @@ const createJestConfig = nextJest({
 
 const customJestConfig = {
   moduleDirectories: ["node_modules", "<rootDir>"],
+  testTimeout: 60000,
 
   // moduleNameMapper: {
   //   "^infra/(.*)$": "<rootDir>/infra/$1",
