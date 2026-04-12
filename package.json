@@ -18,11 +18,11 @@
     "prettier": "^3.8.1"
   },
   "scripts": {
-    "dev2": "concurrently --names migrations,next -k 'npm run migrations:up' 'next dev'",
+    "dev2": "concurrently --names migrations,next -k \"npm run migrations:up\" \"next dev\"",
     "dev": "npm run migrations:up && next dev",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
-    "test": "concurrently --names next,jest --hide next -k --success command-jest 'next dev' 'jest --passWithNoTests --runInBand --verbose'",
+    "test": "concurrently --names next,jest --hide next -k --success command-jest \"next dev\" \"jest --passWithNoTests --runInBand --verbose\"",
     "test:watch": "jest --watchAll --passWithNoTests --runInBand",
     "migrations:create": "node-pg-migrate create create-users-table -m infra/migrations",
     "migrations:up": "node-pg-migrate up -m infra/migrations --envPath .env.development",
