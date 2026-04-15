@@ -10,8 +10,14 @@ jobs:
       postgres:
         image: postgres:16
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASS }}
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     name: Jest Ubuntu
     runs-on: ubuntu-latest
     steps:
@@ -19,7 +25,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "lts/hydrogen"
+          node-version: "lts/jod"
 
       - run: npm ci
 
