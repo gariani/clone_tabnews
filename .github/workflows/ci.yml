@@ -1,14 +1,20 @@
 # .github/workflows/ci.yml
-name: CI
+name: Automated Tests
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-  test:
+  jest:
+    name: Jest Ubuntu
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Run tests
-        run: echo "ok"   # replace with your actual test command
+
+      - uses: actions/setup-no@v4
+        with:
+          node-version: "lts/hydrogen"
+      - run: npm ci
+      - run: npm test
