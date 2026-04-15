@@ -1,4 +1,4 @@
-name: Automated Tests
+name: Automated  Tests
 
 on:
   pull_request:
@@ -32,3 +32,10 @@ jobs:
       - run: npm ci
 
       - run: npm test
+        env:
+          APP_ENV: development
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_USER: postgres
+          DB_PASS: postgres
+          DB_DATABASE: postgres
