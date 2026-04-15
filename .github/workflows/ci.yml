@@ -9,6 +9,9 @@ jobs:
     services:
       postgres:
         image: postgres:16
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASS }}
     name: Jest Ubuntu
     runs-on: ubuntu-latest
     steps:
