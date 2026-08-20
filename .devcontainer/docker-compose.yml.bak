@@ -1,0 +1,22 @@
+services:
+  curso:
+    build:
+      dockerfile: Dockerfile
+    image: tab_news
+    ports:
+      - "8080:8080"
+      - "3000:3000"
+    volumes:
+      - type: bind
+        source: /run/media/daniel/projects/projects/curso.dev
+        target: /curso.dev
+    env_file:
+      #- ../.env.production
+      - ../.env.development
+
+  database:
+    image: "postgres:16.0-alpine3.18"
+    env_file:
+      - ../.env.development
+    ports:
+      - "5432:5432"
