@@ -20,8 +20,8 @@
   "scripts": {
     "dev2": "concurrently --names migrations,next -k \"npm run migrations:up\" \"next dev\"",
     "dev": "npm run migrations:up && next dev",
-    "lint:check": "prettier --check .",
-    "lint:fix": "prettier --write .",
+    "lint:prettier:check": "prettier --check .",
+    "lint:prettier:fix": "prettier --write .",
     "test": "concurrently --names next,jest -k --success command-jest \"next dev\" \"sleep 10 && jest --passWithNoTests --runInBand --verbose\"",
     "test:watch": "jest --watchAll --passWithNoTests --runInBand",
     "migrations:create": "node-pg-migrate create create-users-table -m infra/migrations",
