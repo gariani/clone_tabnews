@@ -19,7 +19,6 @@ jobs:
 
       - run: npm run lint:prettier:fix
   eslint:
-    prettier:
     name: Eslint Test
     runs-on: ubuntu-latest
     steps:
