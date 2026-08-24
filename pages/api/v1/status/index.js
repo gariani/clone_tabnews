@@ -24,12 +24,12 @@ async function databaseVersion() {
   return result.rows[0].server_version;
 }
 
-async function databaseMaxConnections() {
-  const result = await database.query(
-    "SELECT sum(numbackends) AS numbackends FROM pg_stat_database;",
-  );
-  return result.rows[0].numbackends;
-}
+// async function databaseMaxConnections() {
+//   const result = await database.query(
+//     "SELECT sum(numbackends) AS numbackends FROM pg_stat_database;",
+//   );
+//   return result.rows[0].numbackends;
+// }
 
 async function databaseMaxConnections2() {
   const result = await database.query("SHOW max_connections;");
