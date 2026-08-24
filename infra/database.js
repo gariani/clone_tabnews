@@ -49,8 +49,10 @@ function getSSLValues() {
   return process.env.APP_ENV === "development" ? false : true;
 }
 
-export default {
+const database = {
   query,
   queryWithParam,
   getNewClient,
 };
+
+export default database;
