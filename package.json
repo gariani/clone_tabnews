@@ -14,7 +14,9 @@
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^19.2.2",
+    "commitizen": "^4.3.0",
     "concurrently": "^8.2.2",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.2",
     "eslint-config-prettier": "^10.1.8",
@@ -35,7 +37,8 @@
     "migrations:up": "node-pg-migrate up -m infra/migrations --envPath .env.development",
     "migrations:down": "node-pg-migrate down -m infra/migrations --envPath .env.development",
     "wait-for-postgres": "node infra/scripts/wait-for-postgres.js && concurrently --names next,jest -k \"next dev\" \"jest --runInBand --watchAll --verbose\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "commit": "cz"
   },
   "repository": {
     "type": "git",
@@ -46,5 +49,10 @@
   "bugs": {
     "url": "https://github.com/gariani/clone_tabnews/issues"
   },
-  "homepage": "https://github.com/gariani/clone_tabnews#readme"
+  "homepage": "https://github.com/gariani/clone_tabnews#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
