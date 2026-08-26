@@ -19,6 +19,7 @@
     "eslint-config-next": "^16.3.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jest": "^29.16.1",
+    "husky": "^9.1.4",
     "jest": "^29.6.2",
     "prettier": "^3.8.1"
   },
@@ -33,7 +34,8 @@
     "migrations:create": "node-pg-migrate create create-users-table -m infra/migrations",
     "migrations:up": "node-pg-migrate up -m infra/migrations --envPath .env.development",
     "migrations:down": "node-pg-migrate down -m infra/migrations --envPath .env.development",
-    "wait-for-postgres": "node infra/scripts/wait-for-postgres.js && concurrently --names next,jest -k \"next dev\" \"jest --runInBand --watchAll --verbose\""
+    "wait-for-postgres": "node infra/scripts/wait-for-postgres.js && concurrently --names next,jest -k \"next dev\" \"jest --runInBand --watchAll --verbose\"",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
