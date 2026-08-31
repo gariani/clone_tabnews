@@ -3,9 +3,7 @@ import orchestrator from "tests/orchestrator";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
-  await database.query(
-    "drop schema if exists public cascade; create schema if not exists public;",
-  );
+  await orchestrator.clearDatabase();
 });
 
 describe("Get /api/v1/status", () => {
