@@ -2,6 +2,7 @@ import orchestrator from "tests/orchestrator.js";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
+  await orchestrator.clearDatabase();
 });
 
 test("GET to /api/v1/status should return 200", async () => {
@@ -37,7 +38,3 @@ test("GET to /api/v1/status should return 0", async () => {
 
   expect(responseBody.db_total_active_connections).toEqual(1);
 });
-
-// test.only("GET to /api/v1/status should return 1", async () => {
-//   const response = await fetch("http://localhost:3000/api/v1/status");
-// });

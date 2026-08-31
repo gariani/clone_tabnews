@@ -14,7 +14,9 @@
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^19.2.2",
+    "commitizen": "^4.3.0",
     "concurrently": "^8.2.2",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.2",
     "eslint-config-prettier": "^10.1.8",
@@ -26,16 +28,18 @@
   "scripts": {
     "dev2": "concurrently --names migrations,next -k \"npm run migrations:up\" \"next dev\"",
     "dev": "npm run migrations:up && next dev",
+    "postdev": "npm rum services:stop",
+    "test": "concurrently --names next,jest -k --success command-jest \"next dev\" \"sleep 10 && jest --passWithNoTests --runInBand --verbose\"",
+    "test:watch": "jest --watchAll --passWithNoTests --runInBand --verbose",
     "lint:prettier:check": "prettier --check .",
     "lint:prettier:fix": "prettier --write .",
     "lint:eslint:check": "eslint .",
-    "test": "concurrently --names next,jest -k --success command-jest \"next dev\" \"sleep 10 && jest --passWithNoTests --runInBand --verbose\"",
-    "test:watch": "jest --watchAll --passWithNoTests --runInBand",
     "migrations:create": "node-pg-migrate create create-users-table -m infra/migrations",
     "migrations:up": "node-pg-migrate up -m infra/migrations --envPath .env.development",
     "migrations:down": "node-pg-migrate down -m infra/migrations --envPath .env.development",
     "wait-for-postgres": "node infra/scripts/wait-for-postgres.js && concurrently --names next,jest -k \"next dev\" \"jest --runInBand --watchAll --verbose\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "commit": "cz"
   },
   "repository": {
     "type": "git",
@@ -46,5 +50,10 @@
   "bugs": {
     "url": "https://github.com/gariani/clone_tabnews/issues"
   },
-  "homepage": "https://github.com/gariani/clone_tabnews#readme"
+  "homepage": "https://github.com/gariani/clone_tabnews#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }

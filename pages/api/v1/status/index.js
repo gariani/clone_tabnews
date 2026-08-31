@@ -15,8 +15,6 @@ async function status(request, response) {
   };
 
   response.status(200).json(responseBdy);
-
-  console.log(responseBdy);
 }
 
 async function databaseVersion() {
