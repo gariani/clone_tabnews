@@ -23,7 +23,6 @@ async function query(queryObject) {
     const result = await client.query(queryObject);
     return result;
   } catch (error) {
-    console.log(error);
     throw error;
   } finally {
     if (client) await client.end();
@@ -38,7 +37,6 @@ async function queryWithParam(queryObject, values) {
     const result = await client.query(queryObject, values);
     return result;
   } catch (error) {
-    console.log(error);
     throw error;
   } finally {
     if (client) await client.end();
