@@ -1,20 +1,29 @@
 import database from "infra/database.js";
+import { InternalServerError } from "infra/errors";
 
 async function status(request, response) {
-  const updatedAt = new Date().toISOString();
+  try {
+    const updatedAt = new Date().toISOString();
 
-  const dbMaxConn = await databaseMaxConnections2();
-  const dbVersion = await databaseVersion();
-  const dbTotalActiveConn = await databaseActiveConnections();
+    const dbMaxConn = await databaseMaxConnections2();
+    const dbVersion = await databaseVersion();
+    const dbTotalActiveConn = await databaseActiveConnections();
 
-  const responseBdy = {
-    updated_at: updatedAt,
-    db_max_conn: dbMaxConn,
-    db_total_active_connections: dbTotalActiveConn,
-    db_version: dbVersion,
-  };
+    const responseBdy = {
+      updated_at: updatedAt,
+      db_max_conn: dbMaxConn,
+      db_total_active_connections: dbTotalActiveConn,
+      db_version: dbVersion,
+    };
 
-  response.status(200).json(responseBdy);
+    response.status(200).json(responseBdy);
+    return;
+  } catch (error) {
+    console.log(error);
+    const publicErrorObject = new InternalServerError({ cause: error });
+    console.error(publicErrorObject);
+    response.status(500).json(publicErrorObject);
+  }
 }
 
 async function databaseVersion() {
@@ -40,8 +49,7 @@ async function databaseActiveConnections() {
   const values = [process.env.DB_DATABASE];
 
   const result = await database.queryWithParam(query, values);
-
-  return parseInt(result.rows[0].count);
+  return result.rows[0].count;
 }
 
 export default status;
