@@ -1,4 +1,5 @@
 import { Client } from "pg";
+import { ServiceError } from "./errors.js";
 
 async function getNewClient() {
   const client = new Client({
@@ -22,8 +23,14 @@ async function query(queryObject) {
 
     const result = await client.query(queryObject);
     return result;
+  } catch (error) {
+    const serviceError = new ServiceError({
+      cause: error,
+      message: "Connetion failure with Database\\Query",
+    });
+    throw serviceError;
   } finally {
-    if (client) await client.end();
+    if (client) await client?.end();
   }
 }
 
@@ -34,8 +41,14 @@ async function queryWithParam(queryObject, values) {
     client = await getNewClient();
     const result = await client.query(queryObject, values);
     return result;
+  } catch (error) {
+    const serviceError = new ServiceError({
+      cause: error,
+      message: "Connetion failure with Database\\Query",
+    });
+    throw serviceError;
   } finally {
-    if (client) await client.end();
+    if (client) await client?.end();
   }
 }
 

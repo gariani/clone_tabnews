@@ -1,6 +1,15 @@
+import { createRouter } from "next-connect";
 import database from "infra/database.js";
 
-async function status(request, response) {
+import controller from "infra/controllers.js";
+
+const router = createRouter();
+
+router.get(getHandler);
+
+export default router.handler(controller.errorHandlers);
+
+async function getHandler(request, response) {
   const updatedAt = new Date().toISOString();
 
   const dbMaxConn = await databaseMaxConnections2();
@@ -15,19 +24,13 @@ async function status(request, response) {
   };
 
   response.status(200).json(responseBdy);
+  return;
 }
 
 async function databaseVersion() {
   const result = await database.query("SHOW server_version;");
   return result.rows[0].server_version;
 }
-
-// async function databaseMaxConnections() {
-//   const result = await database.query(
-//     "SELECT sum(numbackends) AS numbackends FROM pg_stat_database;",
-//   );
-//   return result.rows[0].numbackends;
-// }
 
 async function databaseMaxConnections2() {
   const result = await database.query("SHOW max_connections;");
@@ -40,8 +43,5 @@ async function databaseActiveConnections() {
   const values = [process.env.DB_DATABASE];
 
   const result = await database.queryWithParam(query, values);
-
-  return parseInt(result.rows[0].count);
+  return result.rows[0].count;
 }
-
-export default status;
