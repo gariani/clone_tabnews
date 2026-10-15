@@ -8,10 +8,7 @@ const customJestConfig = {
   moduleDirectories: ["node_modules", "<rootDir>"],
   testTimeout: 60000,
 
-  // moduleNameMapper: {
-  //   "^infra/(.*)$": "<rootDir>/infra/$1",
-  //   "^models/(.*)$": "<rootDir>/models/$1",
-  // },
+  transformIgnorePatterns: ["/node_modules/(?!(uuid)/)"],
 };
 
 module.exports = createJestConfig(customJestConfig);

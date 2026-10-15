@@ -9,8 +9,6 @@ function checkPostgres() {
       checkPostgres();
       return;
     }
-
-    console.log("postgres is ready!");
   }
 }
 
