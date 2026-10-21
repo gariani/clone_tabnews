@@ -1,12 +1,19 @@
 import { ValidationError as ValidationError } from "infra/errors.js";
-
 import database from "infra/database.js";
+import password from "models/password.js";
 
 async function create(userInputValues) {
   await validateField("username", userInputValues.username);
   await validateField("email", userInputValues.email);
+  const hash = await hashPassword(userInputValues);
+
+  userInputValues.password = hash;
 
   return await runInsertQuery(userInputValues);
+}
+
+async function hashPassword(userInputValues) {
+  return password.hash(userInputValues.password);
 }
 
 async function validateField(field, value) {
@@ -48,8 +55,22 @@ async function runInsertQuery(userInputValues) {
   return results.rows[0];
 }
 
+async function findOneByUsername(userInputValues) {
+  const result = await database.query({
+    text: "SELECT * FROM users WHERE LOWER(username) = LOWER($1)",
+    values: [userInputValues],
+  });
+
+  if (result.rowCount > 0) {
+    return result.rows[0];
+  }
+
+  return null;
+}
+
 const user = {
   create,
+  findOneByUsername,
 };
 
 export default user;

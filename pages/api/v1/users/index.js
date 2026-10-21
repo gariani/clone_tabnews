@@ -5,15 +5,9 @@ import user from "models/user.js";
 
 const router = createRouter();
 
-// router.get(getHandler);
 router.post(postHandler);
 
 export default router.handler(controller.errorHandlers);
-
-// async function getHandler(request, response) {
-//   const pendingMigrations = await migrator.listPendingMigrations();
-//   response.status(200).json(pendingMigrations);
-// }
 
 async function postHandler(request, response) {
   const userInputValues = request.body;
