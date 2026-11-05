@@ -10,38 +10,60 @@ beforeAll(async () => {
 describe("GET /api/v1/users/[username]", () => {
   describe("Anonymous user: ", () => {
     test("With exact case match", async () => {
-      const response1 = await fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: "SameCase",
-          email: "SameCase@gmail.com",
-          password: "test",
-        }),
+      await orchestrator.createUser({
+        username: "SameCase",
+        email: "SameCase@gmail.com",
+        password: "test",
       });
 
-      expect(response1.status).toBe(201);
-
-      const response2 = await fetch(
+      const response = await fetch(
         "http://localhost:3000/api/v1/users/SameCase",
       );
 
-      const body2 = await response2.json();
-      expect(body2).toEqual("SameCase");
+      const body = await response.json();
+      expect(body).toEqual({
+        id: body.id,
+        username: "SameCase",
+        email: "SameCase@gmail.com",
+        password: body.password,
+        created_at: body.created_at,
+        updated_at: body.updated_at,
+      });
     });
 
     test("With case mismatch", async () => {
-      const response2 = await fetch(
-        "http://localhost:3000/api/v1/users/differentOne",
+      await orchestrator.createUser({
+        username: "DifferentCase",
+        email: "DifferentCase@gmail.com",
+        password: "test",
+      });
+
+      const response = await fetch(
+        "http://localhost:3000/api/v1/users/differentcase",
       );
 
-      const body3 = await response2.json();
-      console.log(body3);
+      const body = await response.json();
 
-      expect(body3.status_code).toBe(404);
-      expect(body3).toEqual({
+      expect(response.status).toBe(200);
+      expect(body).toEqual({
+        id: body.id,
+        username: "DifferentCase",
+        email: "DifferentCase@gmail.com",
+        password: body.password,
+        created_at: body.created_at,
+        updated_at: body.updated_at,
+      });
+    });
+
+    test("Non-existent user", async () => {
+      const response = await fetch(
+        "http://localhost:3000/api/v1/users/NotExists",
+      );
+
+      const body = await response.json();
+
+      expect(response.status).toBe(404);
+      expect(body).toEqual({
         name: "NotFoundError",
         message: "Username not found",
         action: "Try another one",

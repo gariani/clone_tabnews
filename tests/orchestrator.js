@@ -1,6 +1,9 @@
 import retry from "async-retry";
 import database from "infra/database.js";
 import migrator from "models/migrator.js";
+import users from "models/user.js";
+import session from "models/session.js";
+import { randomUUID } from "node:crypto";
 
 async function waitForAllServices() {
   await waitForWebServer();
@@ -27,10 +30,24 @@ async function runPendingMigrations() {
   await migrator.runPendingMigrations();
 }
 
+async function createUser(userData) {
+  return await users.create({
+    username: userData.username || `test-${randomUUID()}`.slice(0, 30),
+    email: userData.email || `test-${randomUUID()}@example.com`.slice(0, 254),
+    password: userData.password || "standard_password".slice(0, 60),
+  });
+}
+
+async function createSession(userId) {
+  return await session.create(userId);
+}
+
 const orchestrator = {
   waitForAllServices,
   clearDatabase,
   runPendingMigrations,
+  createUser,
+  createSession,
 };
 
 export default orchestrator;

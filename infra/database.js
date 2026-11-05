@@ -24,11 +24,22 @@ async function query(queryObject) {
     const result = await client.query(queryObject);
     return result;
   } catch (error) {
-    const serviceError = new ServiceError({
-      cause: error,
-      message: "Connetion failure with Database\\Query",
+    console.error("Database error:", {
+      message: error.message,
+      code: error.code,
+      detail: error.detail,
+      hint: error.hint,
+      position: error.position,
+      where: error.where,
+      table: error.table,
+      column: error.column,
+      constraint: error.constraint,
     });
-    throw serviceError;
+
+    throw new ServiceError({
+      cause: error,
+      message: "Connection failure with Database\\Query",
+    });
   } finally {
     if (client) await client?.end();
   }

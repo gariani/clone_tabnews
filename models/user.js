@@ -17,7 +17,7 @@ async function hashPassword(userInputValues) {
 }
 
 async function validateField(field, value) {
-  if (field == "" || value == "") {
+  if (!field || field.trim() === "" || !value || value.trim() === "") {
     throw new ValidationError({
       message: `${field} field is mandatory`,
       action: `please provide value to ${field}`,
@@ -39,6 +39,7 @@ async function checkAlreadyExists(field, value) {
   });
 
   const found = Number(result.rows[0].count);
+
   return found > 0;
 }
 
@@ -55,10 +56,10 @@ async function runInsertQuery(userInputValues) {
   return results.rows[0];
 }
 
-async function findOneByUsername(userInputValues) {
+async function findOneByUsername(username) {
   const result = await database.query({
-    text: "SELECT * FROM users WHERE LOWER(username) = LOWER($1)",
-    values: [userInputValues],
+    text: "SELECT * FROM users WHERE LOWER(username) = LOWER($1);",
+    values: [username],
   });
 
   if (result.rowCount > 0) {
@@ -68,9 +69,61 @@ async function findOneByUsername(userInputValues) {
   return null;
 }
 
+async function findOneById(userId) {
+  const result = await database.query({
+    text: "SELECT * FROM users WHERE id = $1;",
+    values: [userId],
+  });
+
+  if (result.rowCount > 0) {
+    return result.rows[0];
+  }
+
+  return null;
+}
+
+async function findOneByEmail(email) {
+  const result = await database.query({
+    text: "SELECT * FROM users WHERE LOWER(email) = LOWER($1);",
+    values: [email],
+  });
+
+  if (result.rowCount > 0) {
+    return result.rows[0];
+  }
+
+  return null;
+}
+
+async function update(userInputValues) {
+  const results = await database.query({
+    text: `UPDATE
+              users
+            SET username = $2,
+                email = $3,
+                password = $4,
+                updated_at = timezone('utc', now())
+            WHERE id = $1
+            RETURNING *`,
+    values: [
+      userInputValues.id,
+      userInputValues.username,
+      userInputValues.email,
+      userInputValues.password,
+    ],
+  });
+
+  return results.rows[0];
+}
+
 const user = {
   create,
+  update,
+  validateField,
   findOneByUsername,
+  findOneByEmail,
+  findOneById,
+  hashPassword,
 };
 
 export default user;

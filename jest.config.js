@@ -9,6 +9,7 @@ const customJestConfig = {
   testTimeout: 60000,
 
   transformIgnorePatterns: ["/node_modules/(?!(uuid)/)"],
+  transformIgnorePatterns: ["/node_modules/(?!(?:@faker-js/faker)/)"],
 };
 
 module.exports = createJestConfig(customJestConfig);

@@ -23,8 +23,7 @@ async function getHandler(request, response) {
     db_version: dbVersion,
   };
 
-  response.status(200).json(responseBdy);
-  return;
+  return response.status(200).json(responseBdy);
 }
 
 async function databaseVersion() {
