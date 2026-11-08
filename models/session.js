@@ -34,8 +34,10 @@ async function runSelectQuery(token) {
     values: [token],
   });
 
+  if (results.rowCount === 0) {
+    return null;
+  }
   if (results.rowCount > 0) {
-    console.log("results.rows[0]");
     return results.rows[0];
   }
 
@@ -45,22 +47,48 @@ async function runSelectQuery(token) {
 async function renew(sessionId) {
   const expiresAt = new Date(Date.now() + getExpiration());
 
+  async function runUpdateQuery(sessionId, expiresAt) {
+    const results = await database.query({
+      text: `UPDATE sessions SET expires_at = $2, updated_at = NOW() WHERE id = $1 RETURNING *;`,
+      values: [sessionId, expiresAt],
+    });
+
+    return results.rows[0];
+  }
+
   return await runUpdateQuery(sessionId, expiresAt);
-}
-
-async function runUpdateQuery(sessionId, expiresAt) {
-  const results = await database.query({
-    text: `UPDATE sessions SET expires_at = $2, updated_at = NOW() WHERE id = $1 RETURNING *;`,
-    values: [sessionId, expiresAt],
-  });
-
-  return results.rows[0];
 }
 
 async function findOneValidByToken(token) {
   return runSelectQuery(token);
 }
 
-const session = { create, getExpiration, findOneValidByToken, renew };
+async function expireSessionById(sessionId) {
+  async function runUpdateQuery(sessionId) {
+    const results = await database.query({
+      text: `UPDATE sessions
+             SET expires_at = expires_at - interval '1 year', updated_at = NOW()
+             WHERE id = $1
+             RETURNING *;`,
+      values: [sessionId],
+    });
+
+    if (results.rowCount > 0) {
+      return results.rows[0];
+    }
+
+    return null;
+  }
+
+  return runUpdateQuery(sessionId);
+}
+
+const session = {
+  create,
+  getExpiration,
+  findOneValidByToken,
+  renew,
+  expireSessionById,
+};
 
 export default session;

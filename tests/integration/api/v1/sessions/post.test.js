@@ -34,7 +34,7 @@ describe("POST /api/v1/users", () => {
       expect(responseBody).toEqual({
         name: "UnauthorizedError",
         message: "Incorrect username/password",
-        action: "Check the infomation and try it again!",
+        action: "Check the information and try again!",
         status_code: 401,
       });
     });
@@ -62,7 +62,7 @@ describe("POST /api/v1/users", () => {
       expect(responseBody).toEqual({
         name: "UnauthorizedError",
         message: "Incorrect username/password",
-        action: "Check the infomation and try it again!",
+        action: "Check the information and try again!",
         status_code: 401,
       });
     });
@@ -87,7 +87,7 @@ describe("POST /api/v1/users", () => {
       expect(responseBody).toEqual({
         name: "UnauthorizedError",
         message: "Incorrect username/password",
-        action: "Check the infomation and try it again!",
+        action: "Check the information and try again!",
         status_code: 401,
       });
     });
